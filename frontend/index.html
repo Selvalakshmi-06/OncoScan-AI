@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>OncoScan AI</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="logo">
+            🧠 OncoScan AI
+        </div>
+
+        <div class="nav-links">
+            <a href="#home">Home</a>
+            <a href="#analyze">Analyze</a>
+            <a href="#about">About</a>
+        </div>
+    </nav>
+
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+
+        <div class="hero-content">
+
+            <div class="badge">
+                AI-Powered Medical Imaging Research
+            </div>
+
+            <h1>
+                Brain MRI Tumor
+                <span>Analysis</span>
+            </h1>
+
+            <p>
+                Upload a brain MRI image and use our deep learning model
+                to generate a research-oriented classification result
+                with an explainable AI heatmap.
+            </p>
+
+            <a href="#analyze" class="primary-button">
+                Start Analysis
+            </a>
+
+        </div>
+
+        <div class="hero-card">
+
+            <div class="brain-icon">
+                🧠
+            </div>
+
+            <h3>Explainable AI</h3>
+
+            <p>
+                EfficientNetB0 + Grad-CAM
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- Analysis Section -->
+    <section class="analysis-section" id="analyze">
+
+        <div class="section-title">
+
+            <p class="small-title">AI ANALYSIS</p>
+
+            <h2>
+                Upload MRI Scan
+            </h2>
+
+            <p>
+                Select a brain MRI image to analyze.
+            </p>
+
+        </div>
+
+
+        <!-- Upload Box -->
+        <div class="upload-container">
+
+            <div class="upload-box" id="uploadBox">
+
+                <div class="upload-icon">
+                    📁
+                </div>
+
+                <h3>
+                    Upload Brain MRI
+                </h3>
+
+                <p>
+                    JPG, JPEG or PNG
+                </p>
+
+                <label for="imageInput" class="upload-button">
+                    Choose Image
+                </label>
+
+                <input
+                    type="file"
+                    id="imageInput"
+                    accept=".jpg,.jpeg,.png"
+                    hidden
+                >
+
+                <p id="fileName" class="file-name"></p>
+
+            </div>
+
+
+            <!-- Image Preview -->
+            <div class="preview-container" id="previewContainer">
+
+                <h3>Image Preview</h3>
+
+                <img
+                    id="imagePreview"
+                    src=""
+                    alt="MRI Preview"
+                >
+
+            </div>
+
+        </div>
+
+
+        <!-- Analyze Button -->
+        <button
+            id="analyzeButton"
+            class="analyze-button"
+            disabled
+        >
+            Analyze MRI
+        </button>
+
+
+        <!-- Loading -->
+        <div
+            id="loading"
+            class="loading"
+            style="display: none;"
+        >
+
+            <div class="spinner"></div>
+
+            <p>
+                AI model is analyzing the MRI...
+            </p>
+
+        </div>
+
+
+        <!-- Results -->
+        <div
+            id="results"
+            class="results"
+            style="display: none;"
+        >
+
+            <div class="result-header">
+
+                <p class="small-title">
+                    ANALYSIS RESULT
+                </p>
+
+                <h2>
+                    Model Prediction
+                </h2>
+
+            </div>
+
+
+            <!-- Prediction Card -->
+            <div class="prediction-card">
+
+                <div>
+                    <p class="result-label">
+                        Predicted Class
+                    </p>
+
+                    <h2 id="prediction">
+                        -
+                    </h2>
+                </div>
+
+
+                <div>
+                    <p class="result-label">
+                        Confidence
+                    </p>
+
+                    <h2 id="confidence">
+                        -
+                    </h2>
+                </div>
+
+            </div>
+
+
+            <!-- Probabilities -->
+            <div class="probabilities">
+
+                <h3>
+                    Class Probabilities
+                </h3>
+
+                <div class="probability-row">
+
+                    <div class="probability-label">
+                        Glioma
+                    </div>
+
+                    <div class="progress">
+                        <div
+                            id="gliomaBar"
+                            class="progress-fill"
+                        ></div>
+                    </div>
+
+                    <span id="gliomaValue">
+                        0%
+                    </span>
+
+                </div>
+
+
+                <div class="probability-row">
+
+                    <div class="probability-label">
+                        Meningioma
+                    </div>
+
+                    <div class="progress">
+                        <div
+                            id="meningiomaBar"
+                            class="progress-fill"
+                        ></div>
+                    </div>
+
+                    <span id="meningiomaValue">
+                        0%
+                    </span>
+
+                </div>
+
+
+                <div class="probability-row">
+
+                    <div class="probability-label">
+                        No Tumor
+                    </div>
+
+                    <div class="progress">
+                        <div
+                            id="notumorBar"
+                            class="progress-fill"
+                        ></div>
+                    </div>
+
+                    <span id="notumorValue">
+                        0%
+                    </span>
+
+                </div>
+
+
+                <div class="probability-row">
+
+                    <div class="probability-label">
+                        Pituitary
+                    </div>
+
+                    <div class="progress">
+                        <div
+                            id="pituitaryBar"
+                            class="progress-fill"
+                        ></div>
+                    </div>
+
+                    <span id="pituitaryValue">
+                        0%
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- Grad-CAM -->
+            <div class="gradcam-section">
+
+                <h3>
+                    Explainable AI — Grad-CAM
+                </h3>
+
+                <p>
+                    Heatmap showing image regions that contributed
+                    to the model prediction.
+                </p>
+
+                <img
+                    id="gradcamImage"
+                    src=""
+                    alt="Grad-CAM Result"
+                >
+
+            </div>
+
+
+            <!-- Disclaimer -->
+            <div class="disclaimer">
+
+                <strong>Research / Educational Use:</strong>
+
+                This application is a student research project.
+                The prediction is generated by an AI model and
+                should not be used as a medical diagnosis.
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- About Section -->
+    <section class="about-section" id="about">
+
+        <div class="section-title">
+
+            <p class="small-title">
+                ABOUT THE PROJECT
+            </p>
+
+            <h2>
+                How OncoScan AI Works
+            </h2>
+
+        </div>
+
+
+        <div class="feature-grid">
+
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    📤
+                </div>
+
+                <h3>
+                    1. Upload
+                </h3>
+
+                <p>
+                    Upload a brain MRI image through the web interface.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    🤖
+                </div>
+
+                <h3>
+                    2. AI Analysis
+                </h3>
+
+                <p>
+                    EfficientNetB0 processes the MRI and predicts
+                    one of four classes.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    🔥
+                </div>
+
+                <h3>
+                    3. Explainability
+                </h3>
+
+                <p>
+                    Grad-CAM generates a heatmap to visualize
+                    regions influencing the prediction.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Footer -->
+    <footer>
+
+        <p>
+            © 2026 OncoScan AI
+        </p>
+
+        <p>
+            Deep Learning • Explainable AI • Medical Imaging Research
+        </p>
+
+    </footer>
+
+
+    <script src="script.js"></script>
+
+</body>
+</html>

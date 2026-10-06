@@ -1,0 +1,11 @@
+venv/
+__pycache__/
+*.pyc
+.git/
+.gitignore
+data/raw/
+data/processed/
+data/test/
+notebooks/
+tests/
+outputs/
