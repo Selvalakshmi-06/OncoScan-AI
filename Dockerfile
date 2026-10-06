@@ -8,6 +8,6 @@ RUN pip install --no-cache-dir --default-timeout=1000 --retries=10 -r requiremen
 
 COPY . .
 
-EXPOSE 5000
+EXPOSE 10000
 
-CMD ["python", "backend/app.py"]
+CMD ["sh", "-c", "gunicorn --bind 0.0.0.0:$PORT --workers 1 --threads 1 --timeout 120 backend.app:app"]
