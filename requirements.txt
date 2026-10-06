@@ -6,3 +6,4 @@ pillow
 matplotlib==3.11.1
 scikit-learn
 gunicorn
+streamlit
